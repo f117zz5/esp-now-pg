@@ -13,7 +13,7 @@
 #include <espnow.h>
 
 // REPLACE WITH RECEIVER MAC Address
-uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+uint8_t broadcastAddress[] = {0xEC, 0xFA, 0xBC, 0x12, 0xD1, 0xA8};
 
 // Structure example to send data
 // Must match the receiver structure
