@@ -12,14 +12,17 @@
 #include <ESP8266WiFi.h>
 #include <espnow.h>
 
+// activate the LED if message received
+bool current_receive_OK;
+
 // Structure example to receive data
 // Must match the sender structure
 typedef struct struct_message {
-    char a[32];
+    //char a[32];
     int b;
-    float c;
-    String d;
-    bool e;
+    //float c;
+    //String d;
+    //bool e;
 } struct_message;
 
 // Create a struct_message called myData
@@ -28,25 +31,31 @@ struct_message myData;
 // Callback function that will be executed when data is received
 void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len) {
   memcpy(&myData, incomingData, sizeof(myData));
+  //int32_t RSSI = WiFi.RSSI(0);
+  
   Serial.print("Bytes received: ");
   Serial.println(len);
-  Serial.print("Char: ");
-  Serial.println(myData.a);
+  //Serial.print("Char: ");
+  //Serial.println(myData.a);
   Serial.print("Int: ");
   Serial.println(myData.b);
-  Serial.print("Float: ");
-  Serial.println(myData.c);
-  Serial.print("String: ");
-  Serial.println(myData.d);
-  Serial.print("Bool: ");
-  Serial.println(myData.e);
+  //Serial.print("Float: ");
+  //Serial.println(myData.c);
+  //Serial.print("String: ");
+  //Serial.println(myData.d);
+  //Serial.print("Bool: ");
+  //Serial.println(myData.e);
   Serial.println();
+  //Serial.print(RSSI);
+  //delay(1000);
+  current_receive_OK = true;
 }
  
 void setup() {
   // Initialize Serial Monitor
   Serial.begin(115200);
-  
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH); //turn the LED off
   // Set device as a Wi-Fi Station
   WiFi.mode(WIFI_STA);
 
@@ -60,8 +69,17 @@ void setup() {
   // get recv packer info
   esp_now_set_self_role(ESP_NOW_ROLE_SLAVE);
   esp_now_register_recv_cb(OnDataRecv);
+
+  current_receive_OK = false;
 }
 
 void loop() {
+  //Serial.println("in the loop...");
+  if (current_receive_OK){
+    digitalWrite(LED_BUILTIN, LOW); //turn the LED on
+    current_receive_OK = false;
+  }
   
+  delay(200);
+  digitalWrite(LED_BUILTIN, HIGH); //turn the LED off
 }
