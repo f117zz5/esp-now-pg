@@ -13,8 +13,8 @@
 #include <espnow.h>
 
 // REPLACE WITH RECEIVER MAC Address
-uint8_t broadcastAddress[] = {0xEC, 0xFA, 0xBC, 0x12, 0xD1, 0xA8};
-uint8_t broadcastAddress_d1[] = {0x2C, 0xF4, 0x32, 0x8E, 0xD9, 0x75};
+uint8_t broadcastAddress[6] = {0xEC, 0xFA, 0xBC, 0x12, 0xD1, 0xA8};
+uint8_t broadcastAddress_d1[6] = {0x2C, 0xF4, 0x32, 0x8E, 0xD9, 0x75};
 
 // Structure example to send data
 // Must match the receiver structure
@@ -64,6 +64,7 @@ void setup() {
   // Register peer
   esp_now_add_peer(broadcastAddress, ESP_NOW_ROLE_SLAVE, 8, NULL, 0);
   esp_now_add_peer(broadcastAddress_d1, ESP_NOW_ROLE_SLAVE, 8, NULL, 0);
+
 }
  
 void loop() {
@@ -76,7 +77,7 @@ void loop() {
     //myData.e = false;
 
     // Send message via ESP-NOW
-    esp_now_send(broadcastAddress, (uint8_t *) &myData, sizeof(myData));
+    esp_now_send(NULL, (uint8_t *) &myData, sizeof(myData));
 
     lastTime = millis();
   }

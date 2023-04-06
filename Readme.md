@@ -45,3 +45,8 @@ board = nodemcuv2
 framework = arduino
 monitor_speed = 115200
 ```
+
+## Next steps
+
+* use encryption
+* use JSON library
